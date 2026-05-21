@@ -6,6 +6,7 @@ type MovieCardProps = {
     releaseDate: string;
     posterPath: string | null;
     voteAverage: number;
+    
 };
 
 export function MovieCard({
@@ -16,6 +17,7 @@ export function MovieCard({
     voteAverage,
 }: MovieCardProps) {
     const posterUrl = posterPath ? imgBaseUrl + posterPath : null;
+    const releaseYear = releaseDate.split("-")[0];
 
     return (
         <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 shadow-lg shadow-black/20 transition-transform duration-200 hover:-translate-y-1 hover:border-zinc-400">
@@ -28,18 +30,15 @@ export function MovieCard({
                     />
                 ) : null}
             </div>
-            <div className="flex flex-1 flex-col p-4">
-                <div className="mb-3 flex items-start justify-between gap-3">
-                    <h2 className="line-clamp-2 text-lg font-semibold text-white">
+            <div className="flex flex-1 flex-col items-center p-4 text-center">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                    <h2 className="line-clamp-2 text-base font-semibold text-white">
                         {title}
                     </h2>
-                    <span className="shrink-0 rounded-full bg-yellow-400/15 px-2 py-1 text-xs font-medium text-yellow-300">
-                        {voteAverage}
-                    </span>
                 </div>
                 <div className="mt-auto text-sm text-white">
-                    <h2 className="line-clamp-2 text-lg font-semibold text-white">
-                        Data de Lançamento: {releaseDate}
+                    <h2 className="line-clamp-2 text-sm font-semibold text-white">
+                        {releaseYear}
                     </h2>
                 </div>
             </div>
