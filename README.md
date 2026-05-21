@@ -32,15 +32,17 @@ Este projeto usa Next.js, React, TanStack Query e Tailwind CSS.
 Com npm:
 
 npm install
-3. Configurar variáveis de ambiente
-Existe um arquivo de ambiente em src/.env.local com estas variáveis:
 
-NEXT_PUBLIC_TMDB_API_KEY=...
+3. Configurar variáveis de ambiente
+Existe um arquivo de ambiente na raiz do projeto chamado .env.local com estas variáveis:
+
+TMDB_API_TOKEN=<Insira seu Token aqui>
 NEXT_PUBLIC_TMDB_BASE_URL=https://api.themoviedb.org/3
 NEXT_PUBLIC_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/w500
-Se esse arquivo não vier no repositório, crie src/.env.local com esses valores.
 
-Observação importante: no estado atual do código, a busca de filmes usa um token Bearer fixo dentro de src/providers/TMDB-provider.tsx, então o app pode funcionar mesmo sem ler essas variáveis. Ainda assim, manter o .env.local configurado é recomendado.
+Este arquivo não faz parte do repositório, crie um arquivo .env.local com esses valores na raiz do seu projeto.
+
+Sem essas variaveis o sistema nao consegue se comunciar com a API de filmes.
 
 4. Rodar em ambiente de desenvolvimento
 Execute:
@@ -54,6 +56,7 @@ http://localhost:3000
 Para compilar a aplicação:
 
 npm run build
+
 6. Rodar em produção
 Após o build, execute:
 
@@ -64,6 +67,7 @@ TLDR (Resumo dos comandos):
 
 git clone https://github.com/Antonio21195/Catalogo-de-Filmes.git
 cd catalogo-filmes
+criar um arquivo .env.local com os valores do passo 3.
 npm install
 npm run dev
 A aplicação ficará disponível em http://localhost:3000.
