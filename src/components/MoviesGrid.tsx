@@ -4,7 +4,14 @@ import { MovieCard } from "@/components/MovieCard";
 import { useMovies } from "@/providers/TMDB-provider";
 
 export function MoviesGrid() {
-  const { movies, isPending, error } = useMovies();
+  const {
+    movies,
+    isPending,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useMovies();
 
   if (isPending) {
     return <p>Loading...</p>;
@@ -29,6 +36,20 @@ export function MoviesGrid() {
           />
         ))}
       </div>
+       {hasNextPage ? (
+      <div className="mt-10 flex justify-center">
+        <button
+          type="button"
+          onClick={() => {
+            void fetchNextPage();
+          }}
+          disabled={isFetchingNextPage}
+          className="rounded-full bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-300 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isFetchingNextPage ? "Carregando..." : "Carregar mais"}
+        </button>
+      </div>
+    ) : null}
     </div>
   );
 }

@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   const token = process.env.TMDB_API_TOKEN;
   const baseUrl = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
+  const {searchParams} = new URL(request.url)
+  const page = searchParams.get("page") ?? "1";
 
   if (!token || !baseUrl) {
     return NextResponse.json(
@@ -12,7 +14,7 @@ export async function GET() {
   }
 
   const response = await fetch(
-    `${baseUrl}/movie/popular?language=pt-BR&page=1`,
+    `${baseUrl}/movie/popular?language=pt-BR&page=${page}`,
     {
       method: "GET",
       headers: {
