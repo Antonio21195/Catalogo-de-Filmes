@@ -28,6 +28,7 @@ export function MoviesGrid() {
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
+            id={movie.id}
             title={movie.title}
             overview={movie.overview}
             releaseDate={movie.releaseDate}

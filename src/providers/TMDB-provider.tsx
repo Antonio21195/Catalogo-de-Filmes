@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-type TmdbMovie = {
+export type TmdbMovie = {
   id: number;
   title: string;
   overview: string;
@@ -14,7 +14,7 @@ type TmdbMovie = {
   genre_ids: number[];
 };
 
-type Movie = {
+export type Movie = {
   id: number;
   title: string;
   overview: string;
@@ -25,7 +25,7 @@ type Movie = {
   genreIds: number[];
 };
 
-type TmdbPopularMoviesResponse = {
+export type TmdbPopularMoviesResponse = {
   page: number;
   results: TmdbMovie[];
   total_pages: number;
@@ -75,18 +75,22 @@ export function GetMovies({ children }: GetMoviesProps) {
   });
 
   const movies =
-    data?.pages.flatMap((page) =>
-      page.results.map((movie) => ({
-        id: movie.id,
-        title: movie.title,
-        overview: movie.overview,
-        posterPath: movie.poster_path,
-        backdropPath: movie.backdrop_path,
-        releaseDate: movie.release_date,
-        voteAverage: movie.vote_average,
-        genreIds: movie.genre_ids,
-      })),
-    ) ?? [];
+    data?.pages
+      .flatMap((page) =>
+        page.results.map((movie) => ({
+          id: movie.id,
+          title: movie.title,
+          overview: movie.overview,
+          posterPath: movie.poster_path,
+          backdropPath: movie.backdrop_path,
+          releaseDate: movie.release_date,
+          voteAverage: movie.vote_average,
+          genreIds: movie.genre_ids,
+        })),
+      )
+      .filter((movie, index, moviesList) => {
+        return moviesList.findIndex((item) => item.id === movie.id) === index;
+      }) ?? [];
 
   return (
     <MoviesContext.Provider value={{ movies, isPending, error, fetchNextPage, hasNextPage: Boolean(hasNextPage), isFetchingNextPage }}>
