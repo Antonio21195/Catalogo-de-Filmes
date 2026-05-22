@@ -2,6 +2,9 @@
 
 Aplicação web construída com Next.js que consome a API da TMDB para exibir um catálogo de filmes populares com paginação incremental, busca local e página de detalhes baseada em cache do TanStack Query.
 
+## Prévia
+
+Uma prévia da aplicação pode ser facilmente acessada em: https://catalogo-de-filmes-06d3a68cbd27.herokuapp.com/
 
 ## Funcionalidades
 
