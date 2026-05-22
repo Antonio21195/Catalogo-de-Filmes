@@ -65,6 +65,7 @@ export function GetMovies({ children }: GetMoviesProps) {
     queryKey: ["popular-movies"],
     initialPageParam: 1,
     queryFn: ({ pageParam }) => getPopularMovies(pageParam),
+    // Usa os metadados de paginação da TMDB para saber quando parar de buscar novas páginas.
     getNextPageParam: (lastPage) => {
       if (lastPage.page >= lastPage.total_pages) {
         return undefined;
@@ -76,6 +77,7 @@ export function GetMovies({ children }: GetMoviesProps) {
 
   const movies =
     data?.pages
+      // Junta todas as páginas buscadas em uma única lista para a interface.
       .flatMap((page) =>
         page.results.map((movie) => ({
           id: movie.id,
@@ -88,6 +90,7 @@ export function GetMovies({ children }: GetMoviesProps) {
           genreIds: movie.genre_ids,
         })),
       )
+      // Algumas páginas da TMDB podem se sobrepor, o filtro deixa só o primeiro filme por id para não duplicar.
       .filter((movie, index, moviesList) => {
         return moviesList.findIndex((item) => item.id === movie.id) === index;
       }) ?? [];

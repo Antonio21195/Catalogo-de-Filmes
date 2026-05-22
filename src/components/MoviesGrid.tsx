@@ -19,6 +19,7 @@ export function MoviesGrid() {
   } = useMovies();
 
   useEffect(() => {
+    // Aplica um pequeno atraso para evitar refiltrar a cada tecla digitada.
     const timeoutId = window.setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
     }, 300);
@@ -52,9 +53,13 @@ export function MoviesGrid() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
-      <h1 className="p-5 text-5xl font-bold text-heading">Filmes Populares</h1>
-      <SearchBar value={searchTerm} onChange={setSearchTerm} />
-      <div className="grid gap-6 lg:grid-cols-4">
+      <h1 className="animate-fade-in-up p-5 text-5xl font-bold text-heading">
+        Filmes Populares
+      </h1>
+      <div className="animate-fade-in-up-delay">
+        <SearchBar value={searchTerm} onChange={setSearchTerm} />
+      </div>
+      <div className="animate-fade-in-up-delay grid gap-6 lg:grid-cols-4">
         {filteredMovies.map((movie) => (
           <MovieCard
             key={movie.id}
@@ -72,6 +77,7 @@ export function MoviesGrid() {
           Nenhum filme encontrado para essa busca.
         </p>
       ) : null}
+       {/* Esconde a paginação enquanto o filtro local estiver ativo para não misturar busca e carregar mais. */}
        {hasNextPage && !hasActiveSearch ? (
       <div className="mt-10 flex justify-center">
         <button

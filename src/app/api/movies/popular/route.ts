@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const token = process.env.TMDB_API_TOKEN;
   const baseUrl = process.env.TMDB_BASE_URL;
+  // Mantém a API do cliente simples, mas ainda permite paginação via React Query.
   const {searchParams} = new URL(request.url)
   const page = searchParams.get("page") ?? "1";
 

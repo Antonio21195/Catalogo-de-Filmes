@@ -56,6 +56,7 @@ export function MovieDetails({ id }: MovieDetailsProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  // Lê o cache bruto da infinite query em vez de fazer uma segunda chamada para a API.
   const cachedData = queryClient.getQueryData<{
     pages: TmdbPopularMoviesResponse[];
     pageParams: number[];
@@ -74,6 +75,7 @@ export function MovieDetails({ id }: MovieDetailsProps) {
   }, [cachedData, id]);
 
   useEffect(() => {
+    // Se a página for atualizada, o cache em memória se perde, então redirecionei para a home.
     if (!cachedData || !movie) {
       router.replace("/");
     }
@@ -93,7 +95,7 @@ export function MovieDetails({ id }: MovieDetailsProps) {
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-10 text-white">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-[320px_1fr] md:items-start">
-        <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
+        <div className="animate-fade-in-up overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
           {posterUrl ? (
             <img
               src={posterUrl}
@@ -107,7 +109,7 @@ export function MovieDetails({ id }: MovieDetailsProps) {
           )}
         </div>
 
-        <section className="flex flex-col gap-6">
+        <section className="animate-fade-in-up-delay flex flex-col gap-6">
           <div>
             <h1 className="mb-4 text-4xl font-bold">{movie.title}</h1>
             <p className="text-lg leading-8 text-zinc-300">{movie.overview}</p>
