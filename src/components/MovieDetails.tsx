@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/Spinner";
 import { TmdbPopularMoviesResponse } from "@/providers/TMDB-provider";
 
 const imgBaseUrl =
@@ -79,7 +80,7 @@ export function MovieDetails({ id }: MovieDetailsProps) {
   }, [cachedData, movie, router]);
 
   if (!cachedData || !movie) {
-    return null;
+    return <Spinner fullScreen />;
   }
 
   const posterUrl = movie.poster_path ? `${imgBaseUrl}${movie.poster_path}` : null;

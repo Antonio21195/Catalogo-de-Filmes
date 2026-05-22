@@ -1,9 +1,14 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { MovieCard } from "@/components/MovieCard";
+import { SearchBar } from "@/components/SearchBar";
+import { Spinner } from "@/components/Spinner";
 import { useMovies } from "@/providers/TMDB-provider";
 
 export function MoviesGrid() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const {
     movies,
     isPending,
@@ -13,8 +18,32 @@ export function MoviesGrid() {
     isFetchingNextPage
   } = useMovies();
 
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [searchTerm]);
+
+  const filteredMovies = useMemo(() => {
+    const normalizedSearch = debouncedSearchTerm.trim().toLowerCase();
+
+    if (!normalizedSearch) {
+      return movies;
+    }
+
+    return movies.filter((movie) =>
+      movie.title.toLowerCase().includes(normalizedSearch),
+    );
+  }, [debouncedSearchTerm, movies]);
+
+  const hasActiveSearch = debouncedSearchTerm.trim().length > 0;
+
   if (isPending) {
-    return <p>Loading...</p>;
+    return <Spinner fullScreen />;
   }
 
   if (error) {
@@ -24,8 +53,9 @@ export function MoviesGrid() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-10">
       <h1 className="p-5 text-5xl font-bold text-heading">Filmes Populares</h1>
+      <SearchBar value={searchTerm} onChange={setSearchTerm} />
       <div className="grid gap-6 lg:grid-cols-4">
-        {movies.map((movie) => (
+        {filteredMovies.map((movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
@@ -37,7 +67,12 @@ export function MoviesGrid() {
           />
         ))}
       </div>
-       {hasNextPage ? (
+      {filteredMovies.length === 0 ? (
+        <p className="px-5 pt-8 text-center text-zinc-400">
+          Nenhum filme encontrado para essa busca.
+        </p>
+      ) : null}
+       {hasNextPage && !hasActiveSearch ? (
       <div className="mt-10 flex justify-center">
         <button
           type="button"
@@ -45,9 +80,9 @@ export function MoviesGrid() {
             void fetchNextPage();
           }}
           disabled={isFetchingNextPage}
-          className="rounded-full bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-300 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex min-h-12 min-w-40 items-center justify-center rounded-full bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-zinc-300 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isFetchingNextPage ? "Carregando..." : "Carregar mais"}
+          {isFetchingNextPage ? <Spinner size="sm" /> : "Carregar mais"}
         </button>
       </div>
     ) : null}
