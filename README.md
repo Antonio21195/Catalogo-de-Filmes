@@ -37,7 +37,7 @@ npm install
 Existe um arquivo de ambiente na raiz do projeto chamado .env.local com estas variáveis:
 
 TMDB_API_TOKEN=<Insira seu Token aqui>
-NEXT_PUBLIC_TMDB_BASE_URL=https://api.themoviedb.org/3
+TMDB_BASE_URL=https://api.themoviedb.org/3
 NEXT_PUBLIC_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/w500
 
 Este arquivo não faz parte do repositório, crie um arquivo .env.local com esses valores na raiz do seu projeto.
